@@ -4,6 +4,7 @@ WORKDIR /app
 
 RUN apk add --no-cache git
 
+COPY .env ./
 COPY go.mod go.sum ./
 RUN go mod download
 
@@ -16,6 +17,7 @@ FROM alpine:latest
 WORKDIR /root/
 
 COPY --from=builder /app/MoliDB .
+COPY --from=builder /app/.env ./
 
 EXPOSE 17233
 
