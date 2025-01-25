@@ -2,13 +2,13 @@
 
 > **MoliDB**는 오픈소스로 제공되는 안전한 메모리 데이터베이스로, **REST API를 통해 쉽게** 데이터를 다룰 수 있습니다.
 **모든 데이터는 AES 암호화 방식**으로 송수신되어 **민감한 정보도 안전**하게 처리할 수 있습니다.
-자세한 아키텍처 및 기능 설명은 [architecture.md](./md/architecture.md)에서 확인하실 수 있습니다.
-클라이언트 코드 예제는 [example.md](./md/example.md)에서 확인할 수 있습니다.
+자세한 아키텍처 및 기능 설명은 [architecture.md](/md/architecture.md)에서 확인하실 수 있습니다.
+클라이언트 코드 예제는 [example.md](/md/example.md)에서 확인할 수 있습니다.
 
 ### Languages
 
 - [한국어](README.md)
-- [English](./md/README.en.md)
+- [English](/md/README.en.md)
 
 --- 
 

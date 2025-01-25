@@ -1,7 +1,7 @@
 ## Languages
 
-- [한국어](./md/architecture.md)
-- [English](./md/architecture.en.md)
+- [한국어](/md/architecture.md)
+- [English](/md/architecture.en.md)
 
 ## Encryption Method
 
