@@ -7,7 +7,7 @@ Client code examples can be found in [example.md](/md/example.md).
 
 ### Languages
 
-- [한국어](README.md)
+- [한국어](/README.md)
 - [English](/md/README.en.md)
 
 ---

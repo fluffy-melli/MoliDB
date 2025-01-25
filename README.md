@@ -7,7 +7,7 @@
 
 ### Languages
 
-- [한국어](README.md)
+- [한국어](/README.md)
 - [English](/md/README.en.md)
 
 --- 
