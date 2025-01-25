@@ -1,7 +1,7 @@
 ## Languages
 
-- [한국어](architecture.md)
-- [English](architecture.en.md)
+- [한국어](./md/architecture.md)
+- [English](./md/architecture.en.md)
 
 ## 암호화 방식
 

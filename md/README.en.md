@@ -2,13 +2,13 @@
 
 > **MoliDB** is an open-source secure in-memory database that allows you to easily handle data through **REST API**.
 **All data is transmitted and received using AES encryption**, ensuring that **sensitive information is handled securely**.
-For detailed architecture and feature descriptions, please refer to [architecture.en.md](architecture.en.md).
-Client code examples can be found in [example.md](example.md).
+For detailed architecture and feature descriptions, please refer to [architecture.en.md](./md/architecture.en.md).
+Client code examples can be found in [example.md](./md/example.md).
 
 ### Languages
 
 - [한국어](README.md)
-- [English](README.en.md)
+- [English](./md/README.en.md)
 
 ---
 
