@@ -59,6 +59,9 @@ func Load(filename string) (*Safe, error) {
 func (sm *Safe) Backup() error {
 	sm.mu.Lock()
 	defer sm.mu.Unlock()
+	if err := os.MkdirAll(BACKUP, os.ModePerm); err != nil {
+		return err
+	}
 	data, err := gzip.Compress(sm.store)
 	if err != nil {
 		return err

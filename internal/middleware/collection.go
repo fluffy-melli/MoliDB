@@ -5,6 +5,7 @@ import (
 
 	"github.com/fluffy-melli/MoliDB/internal/handlers"
 	"github.com/fluffy-melli/MoliDB/internal/runtime"
+	"github.com/fluffy-melli/MoliDB/pkg/logger"
 	"github.com/gin-gonic/gin"
 )
 
@@ -39,6 +40,7 @@ func Collection(c *gin.Context) {
 	}
 	cy, err := handlers.CryptoEncrypt(runtime.DB.GetStore())
 	if err != nil {
+		logger.ERROR("%v", err)
 		handlers.SendErrResponse(c, 500, err.Error())
 		return
 	}
@@ -71,6 +73,7 @@ func CollectionID(c *gin.Context) {
 	}
 	cy, err := handlers.CryptoSingleEncrypt(store)
 	if err != nil {
+		logger.ERROR("%v", err)
 		handlers.SendErrResponse(c, 500, err.Error())
 		return
 	}
@@ -100,6 +103,7 @@ func CollectionPut(c *gin.Context) {
 	data := c.GetHeader("body")
 	decryptedData, err := handlers.CryptoSingleDecrypt(data)
 	if err != nil {
+		logger.ERROR("%v", err)
 		handlers.SendErrResponse(c, 500, "Failed to decrypt data")
 		return
 	}
@@ -107,6 +111,7 @@ func CollectionPut(c *gin.Context) {
 	store, _ := runtime.DB.Get(id)
 	cy, err := handlers.CryptoSingleEncrypt(store)
 	if err != nil {
+		logger.ERROR("%v", err)
 		handlers.SendErrResponse(c, 500, err.Error())
 		return
 	}
