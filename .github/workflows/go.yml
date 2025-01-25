@@ -10,31 +10,18 @@ on:
 
 jobs:
   build:
-    runs-on: ${{ matrix.os }}
-    strategy:
-      matrix:
-        os: [ubuntu-latest, macos-latest, windows-latest]
+    runs-on: ubuntu-latest
+    
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      - name: Set up Docker on Ubuntu
-        if: runner.os == 'Linux'
+      - name: Set up Docker
         run: |
           sudo apt-get update
           sudo apt-get install -y docker.io
 
-      - name: Set up Docker on macOS
-        if: runner.os == 'macOS'
-        run: |
-          brew install --cask docker
-
-      - name: Install Docker on Windows
-        if: runner.os == 'Windows'
-        run: |
-          choco install docker-desktop
-
-      - name: Log in to DockerHub (if needed)
+      - name: Log in to DockerHub
         uses: docker/login-action@v2
         with:
           username: ${{ secrets.DOCKER_USERNAME }}
@@ -49,11 +36,11 @@ jobs:
           docker run -d -p 17233:17233 --name molidb_container molidb
           docker ps -a
 
-      - name: Verify if the service is running (optional)
+      - name: Verify if the service is running
         run: |
           curl -f http://localhost:17233 || exit 1
 
-      - name: Clean up
+      - name: Clean up Docker container
         run: |
           docker stop molidb_container
           docker rm molidb_container
