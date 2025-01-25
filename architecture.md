@@ -1,3 +1,8 @@
+## Languages
+
+- [한국어](architecture.md)
+- [English](architecture.en.md)
+
 ## 암호화 방식
 
 ### 단계별 과정
