@@ -57,7 +57,3 @@ jobs:
         run: |
           docker stop molidb_container
           docker rm molidb_container
-
-        run: |
-          docker stop molidb_container
-          docker rm molidb_container
