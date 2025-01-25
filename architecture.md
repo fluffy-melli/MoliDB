@@ -40,7 +40,6 @@ graph TD
     subgraph router
         GET_collection[GET /collection] --> input
         GET_collection_id[GET /collection/:id] --> input
-        POST_collection[POST /collection] --> input
         PUT_collection_id[PUT /collection/:id] --> input
         DELETE_collection_id[DELETE /collection/:id] --> input
     end
@@ -59,7 +58,6 @@ graph TD
 
 - `GET /collection`: 모든 컬렉션 데이터를 조회합니다.
 - `GET /collection/:id`: 특정 ID를 가진 컬렉션 데이터를 조회합니다.
-- `POST /collection`: 새로운 컬렉션 데이터를 생성합니다.
 - `PUT /collection/:id`: 특정 ID를 가진 컬렉션 데이터를 업데이트합니다.
 - `DELETE /collection/:id`: 특정 ID를 가진 컬렉션 데이터를 삭제합니다.
 

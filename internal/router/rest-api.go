@@ -8,7 +8,6 @@ import (
 func SetupRestAPI(router *gin.Engine) *gin.Engine {
 	router.GET("/collection", middleware.Collection)
 	router.GET("/collection/:id", middleware.CollectionID)
-	router.POST("/collection", middleware.CollectionPost)
 	router.PUT("/collection/:id", middleware.CollectionPut)
 	router.DELETE("/collection/:id", middleware.CollectionDelete)
 	return router

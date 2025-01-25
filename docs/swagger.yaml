@@ -1,0 +1,128 @@
+definitions:
+  handlers.ErrResponse:
+    properties:
+      error:
+        type: string
+      status:
+        type: integer
+    type: object
+  handlers.Response:
+    properties:
+      data: {}
+      status:
+        type: integer
+    type: object
+info:
+  contact: {}
+paths:
+  /collection:
+    get:
+      parameters:
+      - description: Token
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      responses:
+        "200":
+          description: Encrypted collections data (AES encrypted, gzip compressed)
+          schema:
+            $ref: '#/definitions/handlers.Response'
+        "500":
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/handlers.ErrResponse'
+      summary: Get all collections
+      tags:
+      - collections
+  /collection/{id}:
+    delete:
+      parameters:
+      - description: Token
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: Collection ID
+        in: path
+        name: id
+        required: true
+        type: string
+      responses:
+        "200":
+          description: Collection deleted (AES encrypted, gzip compressed)
+          schema:
+            $ref: '#/definitions/handlers.Response'
+        "400":
+          description: Collection not found
+          schema:
+            $ref: '#/definitions/handlers.ErrResponse'
+        "500":
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/handlers.ErrResponse'
+      summary: Delete collection by ID
+      tags:
+      - collections
+    get:
+      parameters:
+      - description: Token
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: Collection ID
+        in: path
+        name: id
+        required: true
+        type: string
+      responses:
+        "200":
+          description: Encrypted collection data (AES encrypted, gzip compressed)
+          schema:
+            $ref: '#/definitions/handlers.Response'
+        "400":
+          description: Collection not found
+          schema:
+            $ref: '#/definitions/handlers.ErrResponse'
+        "500":
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/handlers.ErrResponse'
+      summary: Get collection by ID
+      tags:
+      - collections
+    put:
+      parameters:
+      - description: Token
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: Collection ID
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: Encrypted collection data (AES encrypted, gzip compressed)
+        in: header
+        name: body
+        required: true
+        type: string
+      responses:
+        "200":
+          description: Encrypted updated collection data (AES encrypted, gzip compressed)
+          schema:
+            $ref: '#/definitions/handlers.Response'
+        "400":
+          description: Collection not found
+          schema:
+            $ref: '#/definitions/handlers.ErrResponse'
+        "500":
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/handlers.ErrResponse'
+      summary: Update collection by ID
+      tags:
+      - collections
+swagger: "2.0"

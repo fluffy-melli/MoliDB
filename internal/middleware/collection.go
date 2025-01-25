@@ -21,6 +21,18 @@ func Auth(c *gin.Context) bool {
 	return false
 }
 
+// Collection godoc
+// @Summary Get all collections
+// @Description
+// Client sends a request with data that is first compressed using gzip and then AES encrypted.
+// The server will decrypt the data using AES and then decompress it using gzip.
+// The server sends back the data, which is first AES encrypted and then compressed using gzip.
+// Both request and response apply AES encryption and gzip compression/decompression.
+// @Tags collections
+// @Param Authorization header string true "Token"
+// @Success 200 {object} handlers.Response "Encrypted collections data (AES encrypted, gzip compressed)"
+// @Failure 500 {object} handlers.ErrResponse "Internal server error"
+// @Router /collection [get]
 func Collection(c *gin.Context) {
 	if i := Auth(c); i {
 		return
@@ -28,10 +40,25 @@ func Collection(c *gin.Context) {
 	cy, err := handlers.CryptoEncrypt(runtime.DB.GetStore())
 	if err != nil {
 		handlers.SendErrResponse(c, 500, err.Error())
+		return
 	}
 	handlers.SendResponse(c, 200, cy)
 }
 
+// CollectionID godoc
+// @Summary Get collection by ID
+// @Description
+// Client sends a request with data that is first compressed using gzip and then AES encrypted.
+// The server will decrypt the data using AES and then decompress it using gzip.
+// The server sends back the data, which is first AES encrypted and then compressed using gzip.
+// Both request and response apply AES encryption and gzip compression/decompression.
+// @Tags collections
+// @Param Authorization header string true "Token"
+// @Param id path string true "Collection ID"
+// @Success 200 {object} handlers.Response "Encrypted collection data (AES encrypted, gzip compressed)"
+// @Failure 400 {object} handlers.ErrResponse "Collection not found"
+// @Failure 500 {object} handlers.ErrResponse "Internal server error"
+// @Router /collection/{id} [get]
 func CollectionID(c *gin.Context) {
 	if i := Auth(c); i {
 		return
@@ -39,43 +66,38 @@ func CollectionID(c *gin.Context) {
 	id := c.Param("id")
 	store, ex := runtime.DB.Get(id)
 	if !ex {
-		handlers.SendErrResponse(c, 404, "Collection not found")
-	}
-	cy, err := handlers.CryptoSingleEncrypt(store)
-	if err != nil {
-		handlers.SendErrResponse(c, 500, err.Error())
-	}
-	handlers.SendResponse(c, 200, cy)
-}
-
-func CollectionPost(c *gin.Context) {
-	if i := Auth(c); i {
+		handlers.SendErrResponse(c, 400, "Collection not found")
 		return
 	}
-	id := c.Param("id")
-	_, ex := runtime.DB.Get(id)
-	if ex {
-		handlers.SendErrResponse(c, 409, "Collection already exists")
-	}
-	runtime.DB.Set(id, map[string]any{})
-	store, _ := runtime.DB.Get(id)
 	cy, err := handlers.CryptoSingleEncrypt(store)
 	if err != nil {
 		handlers.SendErrResponse(c, 500, err.Error())
+		return
 	}
 	handlers.SendResponse(c, 200, cy)
 }
 
+// CollectionPut godoc
+// @Summary Update collection by ID
+// @Description
+// Client sends a request with data that is first compressed using gzip and then AES encrypted.
+// The server will decrypt the data using AES and then decompress it using gzip.
+// The server sends back the updated data, which is first AES encrypted and then compressed using gzip.
+// Both request and response apply AES encryption and gzip compression/decompression.
+// @Tags collections
+// @Param Authorization header string true "Token"
+// @Param id path string true "Collection ID"
+// @Param body header string true "Encrypted collection data (AES encrypted, gzip compressed)"
+// @Success 200 {object} handlers.Response "Encrypted updated collection data (AES encrypted, gzip compressed)"
+// @Failure 400 {object} handlers.ErrResponse "Collection not found"
+// @Failure 500 {object} handlers.ErrResponse "Internal server error"
+// @Router /collection/{id} [put]
 func CollectionPut(c *gin.Context) {
 	if i := Auth(c); i {
 		return
 	}
 	id := c.Param("id")
-	var data string
-	if err := c.ShouldBind(&data); err != nil {
-		handlers.SendErrResponse(c, 400, "Invalid request body")
-		return
-	}
+	data := c.GetHeader("body")
 	decryptedData, err := handlers.CryptoSingleDecrypt(data)
 	if err != nil {
 		handlers.SendErrResponse(c, 500, "Failed to decrypt data")
@@ -86,10 +108,25 @@ func CollectionPut(c *gin.Context) {
 	cy, err := handlers.CryptoSingleEncrypt(store)
 	if err != nil {
 		handlers.SendErrResponse(c, 500, err.Error())
+		return
 	}
 	handlers.SendResponse(c, 200, cy)
 }
 
+// CollectionDelete godoc
+// @Summary Delete collection by ID
+// @Description
+// Client sends a request with data that is first compressed using gzip and then AES encrypted.
+// The server will decrypt the data using AES and then decompress it using gzip.
+// The server sends back a confirmation, which is first AES encrypted and then compressed using gzip.
+// Both request and response apply AES encryption and gzip compression/decompression.
+// @Tags collections
+// @Param Authorization header string true "Token"
+// @Param id path string true "Collection ID"
+// @Success 200 {object} handlers.Response "Collection deleted (AES encrypted, gzip compressed)"
+// @Failure 400 {object} handlers.ErrResponse "Collection not found"
+// @Failure 500 {object} handlers.ErrResponse "Internal server error"
+// @Router /collection/{id} [delete]
 func CollectionDelete(c *gin.Context) {
 	if i := Auth(c); i {
 		return
@@ -97,12 +134,35 @@ func CollectionDelete(c *gin.Context) {
 	id := c.Param("id")
 	_, ex := runtime.DB.Get(id)
 	if !ex {
-		handlers.SendErrResponse(c, 404, "Collection not found")
+		handlers.SendErrResponse(c, 400, "Collection not found")
+		return
 	}
 	runtime.DB.Del(id)
-	cy, err := handlers.CryptoSingleEncrypt(map[string]any{})
-	if err != nil {
-		handlers.SendErrResponse(c, 500, err.Error())
-	}
-	handlers.SendResponse(c, 200, cy)
+	handlers.SendResponse(c, 200, "")
 }
+
+//func CollectionPost(c *gin.Context) {
+//	if i := Auth(c); i {
+//		return
+//	}
+//	id := c.Param("id")
+//	_, ex := runtime.DB.Get(id)
+//	if ex {
+//		handlers.SendErrResponse(c, 409, "Collection already exists")
+//		return
+//	}
+//	data := c.GetHeader("body")
+//	decryptedData, err := handlers.CryptoSingleDecrypt(data)
+//	if err != nil {
+//		handlers.SendErrResponse(c, 500, "Failed to decrypt data")
+//		return
+//	}
+//	runtime.DB.Set(id, decryptedData)
+//	store, _ := runtime.DB.Get(id)
+//	cy, err := handlers.CryptoSingleEncrypt(store)
+//	if err != nil {
+//		handlers.SendErrResponse(c, 500, err.Error())
+//		return
+//	}
+//	handlers.SendResponse(c, 200, cy)
+//}
