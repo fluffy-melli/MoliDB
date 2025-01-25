@@ -12,18 +12,25 @@ gzip 압축 후 AES 암호화를 사용하면 데이터의 크기를 줄이면�
 
 ```mermaid
 graph TD
-    subgraph c_crypto[암/복호화]
+    subgraph c_crypto[암호화]
         BGZIP[gzip] --> BAES[AES]
     end
-    subgraph s_crypto[암/복호화]
+    subgraph cb_crypto[복호화]
+        CBAES[AES] --> CBGZIP[gzip]
+    end
+    subgraph s_crypto[암호화]
         AGZIP[gzip] --> AAES[AES]
     end
+    subgraph sb_crypto[복호화]
+        CAAES[AES] --> CAGZIP[gzip]
+    end
+
     subgraph client
-        Respond0[HTTP Respond] --> c_crypto --> G0[processing]
+        Respond0[HTTP Respond] --> cb_crypto --> G0[processing]
         G0 --> c_crypto --> Request0[HTTP Request]
     end
     subgraph server
-        Request1[HTTP Request] --> s_crypto --> G1[processing]
+        Request1[HTTP Request] --> sb_crypto --> G1[processing]
         G1 --> s_crypto --> Respond1[HTTP Respond]
     end
 ```
@@ -34,8 +41,11 @@ graph TD
 
 ```mermaid
 graph TD
-    subgraph crypto[암/복호화]
+    subgraph crypto[암호화]
         GZIP[gzip] --> AES[AES]
+    end
+    subgraph ccrypto[복호화]
+        CAES[AES] --> CGZIP[gzip]
     end
     subgraph router
         GET_collection[GET /collection] --> input
@@ -46,7 +56,8 @@ graph TD
     subgraph check
         input[router] --> error[API-Token]
         error --> Respond0[HTTP Respond 400]
-        error --> crypto  --> DB --> crypto --> Respond1[HTTP Respond 200]
+        error --> ccrypto  --> DB --> crypto --> Respond1[HTTP Respond 200]
+        DB --> Respond2[HTTP Respond 500]
     end
 ```
 
