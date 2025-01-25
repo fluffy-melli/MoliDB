@@ -14,8 +14,8 @@ DB 구조와 라우터 설계에 대한 자세한 내용은 [architecture.md](ar
 #### Docker로 실행하기
 
 ```sh
-$ docker build -t MoliDB .
-$ docker run -d -p 7777:7777 MoliDB
+$ docker build -t molidb .
+$ docker run -d -p 17233:17233 molidb
 ```
 
 ---
