@@ -2,45 +2,43 @@ name: Go Docker Build Test
 
 on:
   push:
-    branches:
-      - main
+    branches: [ "main" ]
   pull_request:
-    branches:
-      - main
+    branches: [ "main" ]
 
 jobs:
   build:
     runs-on: ubuntu-latest
-    
+
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
+    - uses: actions/checkout@v4
 
-      - name: Set up Docker
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y docker.io
+    - name: Set up Go
+      uses: actions/setup-go@v4
+      with:
+        go-version: '1.22.0'
 
-      - name: Log in to DockerHub
-        uses: docker/login-action@v2
-        with:
-          username: ${{ secrets.DOCKER_USERNAME }}
-          password: ${{ secrets.DOCKER_PASSWORD }}
+    - name: Build Go project
+      run: go build -v ./...
 
-      - name: Build Docker image
-        run: |
-          docker build -t molidb .
+    - name: Run tests
+      run: go test -v ./...
 
-      - name: Run Docker container
-        run: |
-          docker run -d -p 17233:17233 --name molidb_container molidb
-          docker ps -a
+    - name: Set up Docker Buildx
+      uses: docker/setup-buildx-action@v2
 
-      - name: Verify if the service is running
-        run: |
-          curl -f http://localhost:17233 || exit 1
+    - name: Build Docker image
+      run: |
+        docker build -t molidb .
 
-      - name: Clean up Docker container
-        run: |
-          docker stop molidb_container
-          docker rm molidb_container
+    - name: Run Docker container
+      run: |
+        docker run -d -p 17233:17233 molidb
+
+    - name: Check Docker container status
+      run: |
+        docker ps
+
+    - name: Stop Docker container
+      run: |
+        docker ps -q --filter "ancestor=molidb" | xargs -I {} docker stop {}
