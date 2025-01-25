@@ -1,7 +1,8 @@
 ### MoliDB
 
 MoliDB는 **REST API**를 활용한 **메모리 기반 데이터베이스**입니다.  
-DB 구조와 라우터 설계에 대한 자세한 내용은 [architecture.md](architecture.md)에서 확인할 수 있습니다.
+DB 구조와 라우터 설계및 암호화방식에 대한 자세한 내용은 [architecture.md](architecture.md)에서 확인할 수 있습니다.
+예제 코드는 [example.md](example.md)에서 확인할 수 있습니다.
 
 ---
 

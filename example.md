@@ -1,3 +1,4 @@
+```py
 import os
 import json
 import requests
@@ -92,3 +93,4 @@ def delete_collection(id):
     response = requests.delete(f"{SERVER_URL}/collection/{id}", headers=headers)
     if response.status_code != 200:
         raise f"HTTP FAIL : {response.json()}"
+```
