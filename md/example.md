@@ -1,11 +1,7 @@
 ## 🐍 python
 
 ```py
-import os
-import json
-import requests
-import gzip
-import base64
+import json, requests, gzip, base64
 from io import BytesIO
 from Crypto.Cipher import AES
 from Crypto.Util.Padding import pad, unpad
@@ -45,13 +41,8 @@ def gzip_decompress(data: bytes) -> bytes:
     with gzip.GzipFile(fileobj=buf, mode='rb') as f:
         return f.read()
 
-def create_collection(data):
-    json_data = json.dumps(data).encode()
-    compressed_data = gzip_compress(json_data)
-    encrypted_data = aes_encrypt(compressed_data)
-    encrypted_data_base64 = base64.b64encode(encrypted_data).decode('utf-8')
-    headers['body'] = encrypted_data_base64
-    response = requests.post(f"{SERVER_URL}/collection", headers=headers)
+def list_collection():
+    response = requests.get(f"{SERVER_URL}/collection", headers=headers)
     if response.status_code == 200:
         encrypted_data_base64 = response.json().get("data")
         encrypted_data = base64.b64decode(encrypted_data_base64)
@@ -95,4 +86,9 @@ def delete_collection(id):
     response = requests.delete(f"{SERVER_URL}/collection/{id}", headers=headers)
     if response.status_code != 200:
         raise f"HTTP FAIL : {response.json()}"
+    
+if __name__ == "__main__":
+    print(update_collection("user", [{"id":"owo"}]))
+    print(get_collection("user"))
+    print(list_collection())
 ```

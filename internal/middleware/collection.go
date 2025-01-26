@@ -1,6 +1,7 @@
 package middleware
 
 import (
+	"encoding/json"
 	"os"
 
 	"github.com/fluffy-melli/MoliDB/internal/handlers"
@@ -38,9 +39,15 @@ func Collection(c *gin.Context) {
 	if i := Auth(c); i {
 		return
 	}
-	cy, err := handlers.CryptoEncrypt(runtime.DB.GetStore())
+	jsonData, err := json.Marshal(runtime.DB.GetStore())
 	if err != nil {
-		logger.ERROR("%v", err)
+		logger.WARNING("%v", err)
+		handlers.SendErrResponse(c, 500, err.Error())
+		return
+	}
+	cy, err := handlers.CryptoEncrypt(jsonData)
+	if err != nil {
+		logger.WARNING("%v", err)
 		handlers.SendErrResponse(c, 500, err.Error())
 		return
 	}
@@ -71,9 +78,15 @@ func CollectionID(c *gin.Context) {
 		handlers.SendErrResponse(c, 400, "Collection not found")
 		return
 	}
-	cy, err := handlers.CryptoSingleEncrypt(store)
+	jsonData, err := json.Marshal(store)
 	if err != nil {
-		logger.ERROR("%v", err)
+		logger.WARNING("%v", err)
+		handlers.SendErrResponse(c, 500, err.Error())
+		return
+	}
+	cy, err := handlers.CryptoEncrypt(jsonData)
+	if err != nil {
+		logger.WARNING("%v", err)
 		handlers.SendErrResponse(c, 500, err.Error())
 		return
 	}
@@ -101,17 +114,30 @@ func CollectionPut(c *gin.Context) {
 	}
 	id := c.Param("id")
 	data := c.GetHeader("body")
-	decryptedData, err := handlers.CryptoSingleDecrypt(data)
+	decryptedData, err := handlers.CryptoDecrypt(data)
 	if err != nil {
-		logger.ERROR("%v", err)
+		logger.WARNING("%v", err)
 		handlers.SendErrResponse(c, 500, "Failed to decrypt data")
 		return
 	}
-	runtime.DB.Set(id, decryptedData)
-	store, _ := runtime.DB.Get(id)
-	cy, err := handlers.CryptoSingleEncrypt(store)
+	var mapdata any
+	err = json.Unmarshal(decryptedData, &mapdata)
 	if err != nil {
-		logger.ERROR("%v", err)
+		logger.WARNING("%v", err)
+		handlers.SendErrResponse(c, 500, "Failed to decrypt data")
+		return
+	}
+	runtime.DB.Set(id, mapdata)
+	store, _ := runtime.DB.Get(id)
+	jsonData, err := json.Marshal(store)
+	if err != nil {
+		logger.WARNING("%v", err)
+		handlers.SendErrResponse(c, 500, err.Error())
+		return
+	}
+	cy, err := handlers.CryptoEncrypt(jsonData)
+	if err != nil {
+		logger.WARNING("%v", err)
 		handlers.SendErrResponse(c, 500, err.Error())
 		return
 	}

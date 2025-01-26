@@ -6,23 +6,23 @@ import (
 
 type Safe struct {
 	mu    sync.RWMutex
-	store map[string]map[string]any
+	store map[string]any
 }
 
 func NewSafeMap() *Safe {
 	return &Safe{
-		store: make(map[string]map[string]any),
+		store: make(map[string]any, 0),
 	}
 }
 
-func (sm *Safe) Get(key string) (map[string]any, bool) {
+func (sm *Safe) Get(key string) (any, bool) {
 	sm.mu.RLock()
 	defer sm.mu.RUnlock()
 	value, exists := sm.store[key]
 	return value, exists
 }
 
-func (sm *Safe) Set(key string, value map[string]any) {
+func (sm *Safe) Set(key string, value any) {
 	sm.mu.Lock()
 	defer sm.mu.Unlock()
 	sm.store[key] = value
@@ -44,7 +44,7 @@ func (s *Safe) GetKeys() []string {
 	return keys
 }
 
-func (s *Safe) GetStore() map[string]map[string]any {
+func (s *Safe) GetStore() map[string]any {
 	s.mu.RLock()
 	defer s.mu.RUnlock()
 	return s.store

@@ -1,6 +1,7 @@
 package cache
 
 import (
+	"encoding/json"
 	"io"
 	"os"
 	"path/filepath"
@@ -49,10 +50,16 @@ func Load(filename string) (*Safe, error) {
 	if err != nil {
 		return nil, err
 	}
-	safe.store, err = gzip.Decompress(data)
+	bytedata, err := gzip.Decompress(data)
 	if err != nil {
 		return nil, err
 	}
+	var mapdata map[string]any
+	err = json.Unmarshal(bytedata, &mapdata)
+	if err != nil {
+		return nil, err
+	}
+	safe.store = mapdata
 	return safe, nil
 }
 
@@ -62,7 +69,11 @@ func (sm *Safe) Backup() error {
 	if err := os.MkdirAll(BACKUP, os.ModePerm); err != nil {
 		return err
 	}
-	data, err := gzip.Compress(sm.store)
+	jsonData, err := json.Marshal(sm.store)
+	if err != nil {
+		return err
+	}
+	data, err := gzip.Compress(jsonData)
 	if err != nil {
 		return err
 	}

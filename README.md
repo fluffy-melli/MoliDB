@@ -115,6 +115,77 @@ graph TD
 
 ---
 
+### 🏗️ 전체 구조
+
+```mermaid
+graph TB
+    Client((Client))
+    
+    subgraph "MoliDB System"
+        subgraph "API Layer"
+            RestAPI["REST API Server<br>Gin Framework"]
+            SwaggerDocs["API Documentation<br>Swagger"]
+            
+            subgraph "Middleware Components"
+                AuthMiddleware["Authentication<br>JWT"]
+                RateLimiter["Rate Limiter<br>Token Bucket"]
+                CollectionHandler["Collection Handler<br>Gin"]
+            end
+        end
+        
+        subgraph "Core Services"
+            subgraph "Encryption Service"
+                GzipComp["Compression<br>gzip"]
+                AESCrypto["Encryption<br>AES-CBC"]
+            end
+            
+            subgraph "Data Storage"
+                CacheStore["In-Memory Store<br>Safe Map"]
+                BackupService["Backup Service<br>Go"]
+            end
+            
+            subgraph "Utility Services"
+                Logger["Logger Service<br>Go"]
+                ConfigManager["Config Manager<br>godotenv"]
+            end
+        end
+    end
+
+    %% Client Interactions
+    Client -->|"HTTP Requests"| RestAPI
+    
+    %% API Layer Connections
+    RestAPI -->|"Routes"| CollectionHandler
+    RestAPI -->|"Documents"| SwaggerDocs
+    RestAPI -->|"Validates"| AuthMiddleware
+    RestAPI -->|"Controls Rate"| RateLimiter
+    
+    %% Middleware Flow
+    CollectionHandler -->|"Processes"| GzipComp
+    GzipComp -->|"Secures"| AESCrypto
+    
+    %% Data Flow
+    AESCrypto -->|"Stores"| CacheStore
+    CacheStore -->|"Backs up"| BackupService
+    
+    %% Utility Connections
+    CollectionHandler -->|"Logs"| Logger
+    RestAPI -->|"Loads Config"| ConfigManager
+    
+    %% Data Processing Flow
+    CacheStore -->|"Retrieves"| AESCrypto
+    AESCrypto -->|"Decompresses"| GzipComp
+    GzipComp -->|"Returns"| CollectionHandler
+
+    %% Styling
+    classDef container fill:#e1eeff,stroke:#9dc1ff
+    classDef component fill:#f9f9f9,stroke:#666
+    class RestAPI,CacheStore container
+    class AuthMiddleware,RateLimiter,CollectionHandler,GzipComp,AESCrypto,Logger,ConfigManager,BackupService component
+```
+
+---
+
 ### 📜 라이선스
 
 `MoliDB`는 **MIT License**를 따릅니다. 코드를 수정하거나 배포할 경우, 라이선스 내용을 준수해 주세요.  
