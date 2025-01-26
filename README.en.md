@@ -6,9 +6,8 @@
 </div>
 <div align="center">
 
-  [![PyPI version](https://img.shields.io/pypi/v/molidb.svg)](https://pypi.org/project/molidb/) [![npm version](https://img.shields.io/npm/v/molidb.svg)](https://www.npmjs.com/package/molidb)
+  [![GoDoc](https://pkg.go.dev/badge/github.com/yourusername/molidb.svg)](https://pkg.go.dev/github.com/fluffy-melli/molidb) [![PyPI version](https://img.shields.io/pypi/v/molidb.svg?color=blue)](https://pypi.org/project/molidb/) [![npm version](https://img.shields.io/npm/v/molidb.svg?color=yellow)](https://www.npmjs.com/package/molidb)
 </div>
-
 
 ### 🌟 **MoliDB - Secure Memory Database**
 
