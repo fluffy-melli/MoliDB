@@ -28,6 +28,39 @@ $ docker run -d -p 17233:17233 molidb
 
 ---
 
+### 📦 **클라이언트 설치**
+
+- ### 🐍 Python [![PyPI version](https://img.shields.io/pypi/v/molidb.svg)](https://pypi.org/project/molidb/)
+
+> MoliDB 클라이언트를 Python에서 사용하려면 아래 명령어로 PyPI에서 라이브러리를 설치할 수 있습니다:
+
+```bash
+$ pip install molidb
+```
+
+#### 📜 예제 코드
+
+```py
+import molidb
+
+molidb.SERVER_URL = "http://127.0.0.1:17233"
+molidb.SECRET_KEY = "ThisIs32byteAESkeyForThisExample"
+molidb.API_TOKEN  = "ThisIsExampleAPIKey"
+
+print(molidb.list_collection())
+print(molidb.update_collection('user', [{'id':'molidb','money':10}]))
+userlist = molidb.get_collection('user')
+print(userlist)
+for user in userlist:
+    if user['id'] == 'molidb':
+        user['money'] += 20
+print(molidb.get_collection('user'))
+print(molidb.update_collection('user', userlist))
+print(molidb.list_collection())
+```
+
+---
+
 ### 🔐 암호화 방식
 
 - 단계별 과정
@@ -80,16 +113,17 @@ graph TD
         CAES[AES] --> CGZIP[gzip]
     end
     subgraph router
-        GET_collection[GET /collection] --> input
+        GET_collection[GET /collection] --> input[router]
         GET_collection_id[GET /collection/:id] --> input
         PUT_collection_id[PUT /collection/:id] --> input
         DELETE_collection_id[DELETE /collection/:id] --> input
-    end
-    subgraph check
-        input[router] --> error[API-Token]
-        error --> Respond0[HTTP Respond 400]
-        error --> ccrypto  --> DB --> crypto --> Respond1[HTTP Respond 200]
-        DB --> Respond2[HTTP Respond 500]
+        input --> error
+        subgraph check
+            error[API-Token]
+            error --> Respond0[HTTP Respond 400]
+            error --> ccrypto  --> DB --> crypto --> Respond1[HTTP Respond 200]
+            DB --> Respond2[HTTP Respond 500]
+        end
     end
 ```
 

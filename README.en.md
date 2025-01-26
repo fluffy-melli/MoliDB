@@ -28,6 +28,39 @@ $ docker run -d -p 17233:17233 molidb
 
 ---
 
+### 📦 **Installing the Client**
+
+- ### 🐍 Python [![PyPI version](https://img.shields.io/pypi/v/molidb.svg)](https://pypi.org/project/molidb/)
+
+> To use the MoliDB client in Python, you can install the library from PyPI using the following command:
+
+```bash
+$ pip install molidb
+```
+
+#### 📜 Example Code
+
+```py
+import molidb
+
+molidb.SERVER_URL = "http://127.0.0.1:17233"
+molidb.SECRET_KEY = "ThisIs32byteAESkeyForThisExample"
+molidb.API_TOKEN  = "ThisIsExampleAPIKey"
+
+print(molidb.list_collection())
+print(molidb.update_collection('user', [{'id':'molidb','money':10}]))
+userlist = molidb.get_collection('user')
+print(userlist)
+for user in userlist:
+    if user['id'] == 'molidb':
+        user['money'] += 20
+print(molidb.get_collection('user'))
+print(molidb.update_collection('user', userlist))
+print(molidb.list_collection())
+```
+
+---
+
 ### 🔐 **Encryption Method**
 
 - Step-by-step Process
@@ -80,16 +113,17 @@ graph TD
         CAES[AES] --> CGZIP[gzip]
     end
     subgraph router
-        GET_collection[GET /collection] --> input
+        GET_collection[GET /collection] --> input[router]
         GET_collection_id[GET /collection/:id] --> input
         PUT_collection_id[PUT /collection/:id] --> input
         DELETE_collection_id[DELETE /collection/:id] --> input
-    end
-    subgraph check
-        input[router] --> error[API-Token]
-        error --> Respond0[HTTP Respond 400]
-        error --> ccrypto  --> DB --> crypto --> Respond1[HTTP Respond 200]
-        DB --> Respond2[HTTP Respond 500]
+        input --> error
+        subgraph check
+            error[API-Token]
+            error --> Respond0[HTTP Respond 400]
+            error --> ccrypto  --> DB --> crypto --> Respond1[HTTP Respond 200]
+            DB --> Respond2[HTTP Respond 500]
+        end
     end
 ```
 
