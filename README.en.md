@@ -41,22 +41,19 @@ $ pip install molidb
 #### 📜 Example Code
 
 ```py
-import molidb
+from molidb import molidb
 
-molidb.SERVER_URL = "http://127.0.0.1:17233"
-molidb.SECRET_KEY = "ThisIs32byteAESkeyForThisExample"
-molidb.API_TOKEN  = "ThisIsExampleAPIKey"
-
-print(molidb.list_collection())
-print(molidb.update_collection('user', [{'id':'molidb','money':10}]))
-userlist = molidb.get_collection('user')
+db = molidb() # You can modify the server URL, secret key, and API token here.
+print(db.list_collection())
+print(db.update_collection('user', [{'id':'molidb','money':10}]))
+userlist = db.get_collection('user')
 print(userlist)
 for user in userlist:
     if user['id'] == 'molidb':
         user['money'] += 20
-print(molidb.get_collection('user'))
-print(molidb.update_collection('user', userlist))
-print(molidb.list_collection())
+print(db.get_collection('user'))
+print(db.update_collection('user', userlist))
+print(db.list_collection())
 ```
 
 ---
