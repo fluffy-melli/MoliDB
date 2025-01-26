@@ -4,6 +4,10 @@
     <a href="/README.en.md">EN</a>
   </h3>
 </div>
+<div align="center">
+
+  [![PyPI version](https://img.shields.io/pypi/v/molidb.svg)](https://pypi.org/project/molidb/) [![npm version](https://img.shields.io/npm/v/molidb.svg)](https://www.npmjs.com/package/molidb)
+</div>
 
 ### 🌟 **MoliDB - 안전한 메모리 데이터베이스**
 
@@ -30,7 +34,7 @@ $ docker run -d -p 17233:17233 molidb
 
 ### 📦 **클라이언트 설치**
 
-- ### 🐍 Python [![PyPI version](https://img.shields.io/pypi/v/molidb.svg)](https://pypi.org/project/molidb/)
+### Python ![Python Icon](https://img.shields.io/badge/python-3.x-blue.svg) [![PyPI version](https://img.shields.io/pypi/v/molidb.svg)](https://pypi.org/project/molidb/)
 
 > MoliDB 클라이언트를 Python에서 사용하려면 아래 명령어로 PyPI에서 라이브러리를 설치할 수 있습니다:
 
@@ -38,7 +42,7 @@ $ docker run -d -p 17233:17233 molidb
 $ pip install molidb
 ```
 
-#### 📜 예제 코드
+#### 📜 예제 코드 (Python)
 
 ```py
 from molidb import molidb
@@ -56,6 +60,42 @@ print(db.update_collection('user', userlist))
 print(db.list_collection())
 ```
 
+---
+
+### JavaScript ![JavaScript Icon](https://img.shields.io/badge/JavaScript-ES6-yellow.svg) [![npm version](https://img.shields.io/npm/v/molidb.svg)](https://www.npmjs.com/package/molidb)
+
+> MoliDB 클라이언트를 JavaScript에서 사용하려면 아래 명령어로 npm에서 라이브러리를 설치할 수 있습니다:
+
+```bash
+$ npm install molidb
+```
+
+#### 📜 예제 코드 (JavaScript)
+```js
+const Molidb = require('molidb');
+
+(async () => {
+    try {
+        const db = new Molidb(); // 서버 URL / 시크릿 키 / API 토큰은 여기서 수정할수 있어요
+        console.log(JSON.stringify(await db.listCollection()));
+        console.log(JSON.stringify(await db.updateCollection('user', [{ id: 'molidb', money: 10 }])));
+        let userlist = await db.getCollection('user');
+        console.log(JSON.stringify(userlist));
+        userlist.forEach(user => {
+            if (user.id === 'molidb') {
+                user.money += 20;
+            }
+        });
+        console.log(JSON.stringify(await db.getCollection('user')));
+        console.log(JSON.stringify(await db.updateCollection('user', userlist)));
+        console.log(JSON.stringify(await db.listCollection()));
+        await db.deleteCollection('user');
+        console.log(JSON.stringify(await db.listCollection()));
+    } catch (error) {
+        console.error('Error:', error.message);
+    }
+})();
+```
 ---
 
 ### 🔐 암호화 방식

@@ -4,6 +4,11 @@
     <a href="/README.en.md">EN</a>
   </h3>
 </div>
+<div align="center">
+
+  [![PyPI version](https://img.shields.io/pypi/v/molidb.svg)](https://pypi.org/project/molidb/) [![npm version](https://img.shields.io/npm/v/molidb.svg)](https://www.npmjs.com/package/molidb)
+</div>
+
 
 ### 🌟 **MoliDB - Secure Memory Database**
 
@@ -30,7 +35,7 @@ $ docker run -d -p 17233:17233 molidb
 
 ### 📦 **Installing the Client**
 
-- ### 🐍 Python [![PyPI version](https://img.shields.io/pypi/v/molidb.svg)](https://pypi.org/project/molidb/)
+### Python ![Python Icon](https://img.shields.io/badge/python-3.x-blue.svg) [![PyPI version](https://img.shields.io/pypi/v/molidb.svg)](https://pypi.org/project/molidb/)
 
 > To use the MoliDB client in Python, you can install the library from PyPI using the following command:
 
@@ -38,7 +43,7 @@ $ docker run -d -p 17233:17233 molidb
 $ pip install molidb
 ```
 
-#### 📜 Example Code
+#### 📜 Example Code (Python)
 
 ```py
 from molidb import molidb
@@ -54,6 +59,44 @@ for user in userlist:
 print(db.get_collection('user'))
 print(db.update_collection('user', userlist))
 print(db.list_collection())
+```
+
+---
+
+### JavaScript ![JavaScript Icon](https://img.shields.io/badge/JavaScript-ES6-yellow.svg) [![npm version](https://img.shields.io/npm/v/molidb.svg)](https://www.npmjs.com/package/molidb)
+
+> To use the MoliDB client in JavaScript, you can install the library from npm using the following command:
+
+```bash
+$ npm install molidb
+```
+
+#### 📜 Example Code (JavaScript)
+
+```js
+const Molidb = require('molidb');
+
+(async () => {
+    try {
+        const db = new Molidb(); // You can modify the server URL / secret key / API token here
+        console.log(JSON.stringify(await db.listCollection()));
+        console.log(JSON.stringify(await db.updateCollection('user', [{ id: 'molidb', money: 10 }])));
+        let userlist = await db.getCollection('user');
+        console.log(JSON.stringify(userlist));
+        userlist.forEach(user => {
+            if (user.id === 'molidb') {
+                user.money += 20;
+            }
+        });
+        console.log(JSON.stringify(await db.getCollection('user')));
+        console.log(JSON.stringify(await db.updateCollection('user', userlist)));
+        console.log(JSON.stringify(await db.listCollection()));
+        await db.deleteCollection('user');
+        console.log(JSON.stringify(await db.listCollection()));
+    } catch (error) {
+        console.error('Error:', error.message);
+    }
+})();
 ```
 
 ---
