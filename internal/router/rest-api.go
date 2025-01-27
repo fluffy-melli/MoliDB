@@ -14,6 +14,7 @@ func SetupRestAPI(router *gin.Engine, config middleware.MiddlewareConfig) *gin.E
 	router.GET("/collection/:id", middleware.CollectionID)
 	router.PUT("/collection/:id", middleware.CollectionPut)
 	router.DELETE("/collection/:id", middleware.CollectionDelete)
+	router.GET("/system", middleware.SystemInfo)
 	router.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 	return router
 }

@@ -180,6 +180,29 @@ const docTemplate = `{
                     }
                 }
             }
+        },
+        "/system": {
+            "get": {
+                "description": "Returns system memory stats, runtime duration, and version",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "information"
+                ],
+                "summary": "Get system information",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/middleware.SystemInfoRespond"
+                        }
+                    }
+                }
+            }
         }
     },
     "definitions": {
@@ -200,6 +223,40 @@ const docTemplate = `{
                 "data": {},
                 "status": {
                     "type": "integer"
+                }
+            }
+        },
+        "middleware.MemoryInfo": {
+            "type": "object",
+            "properties": {
+                "alloc": {
+                    "type": "string"
+                },
+                "gccpu": {
+                    "type": "number"
+                },
+                "heap-alloc": {
+                    "type": "string"
+                },
+                "heap-idle": {
+                    "type": "string"
+                },
+                "heap-system": {
+                    "type": "string"
+                }
+            }
+        },
+        "middleware.SystemInfoRespond": {
+            "type": "object",
+            "properties": {
+                "memory": {
+                    "$ref": "#/definitions/middleware.MemoryInfo"
+                },
+                "runtime": {
+                    "type": "string"
+                },
+                "version": {
+                    "type": "string"
                 }
             }
         }

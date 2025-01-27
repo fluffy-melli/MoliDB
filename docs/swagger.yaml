@@ -12,6 +12,28 @@ definitions:
       status:
         type: integer
     type: object
+  middleware.MemoryInfo:
+    properties:
+      alloc:
+        type: string
+      gccpu:
+        type: number
+      heap-alloc:
+        type: string
+      heap-idle:
+        type: string
+      heap-system:
+        type: string
+    type: object
+  middleware.SystemInfoRespond:
+    properties:
+      memory:
+        $ref: '#/definitions/middleware.MemoryInfo'
+      runtime:
+        type: string
+      version:
+        type: string
+    type: object
 info:
   contact: {}
 paths:
@@ -125,4 +147,19 @@ paths:
       summary: Update collection by ID
       tags:
       - collections
+  /system:
+    get:
+      consumes:
+      - application/json
+      description: Returns system memory stats, runtime duration, and version
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/middleware.SystemInfoRespond'
+      summary: Get system information
+      tags:
+      - information
 swagger: "2.0"
