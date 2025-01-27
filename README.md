@@ -15,6 +15,11 @@
 All data is transmitted and received using **AES encryption**, ensuring sensitive information is handled securely.  
 You can find client code examples in [example.md](/md/example.md).
 
+> **Unallowed IPs will be denied access**  
+MoliDB blocks connections from IPs that are not included in the configured allowed IP list, further enhancing the security of the database.
+
+> **⚠️Warning**: If `allow-ip` is an empty array (`[]`) in the config.json, all connections will be allowed. This setting can be very insecure, so use it with caution.
+
 ---
 
 ### 🚀 **Installation Instructions**

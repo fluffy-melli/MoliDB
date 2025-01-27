@@ -8,6 +8,7 @@ import (
 )
 
 func SetupRestAPI(router *gin.Engine, config middleware.MiddlewareConfig) *gin.Engine {
+	router.Use(middleware.AllowIPMiddleware())
 	router.Use(middleware.TokenBucketMiddleware(config))
 	router.GET("/collection", middleware.Collection)
 	router.GET("/collection/:id", middleware.CollectionID)
