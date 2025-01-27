@@ -19,6 +19,7 @@ WORKDIR /root/
 
 COPY --from=builder /app/MoliDB .
 COPY --from=builder /app/.env ./
+COPY --from=builder /app/config.json ./
 
 EXPOSE 17233
 
