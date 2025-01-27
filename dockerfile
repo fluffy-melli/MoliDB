@@ -5,6 +5,7 @@ WORKDIR /app
 RUN apk add --no-cache git
 
 COPY .env ./
+COPY config.json ./
 COPY go.mod go.sum ./
 RUN go mod download
 
