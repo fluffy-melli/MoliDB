@@ -1,7 +1,7 @@
 <div align="center">
   <h3>
-    <a href="/README.md">KR</a> /
-    <a href="/README.en.md">EN</a>
+    <a href="/README.kr.md">KR</a> /
+    <a href="/README.md">EN</a>
   </h3>
 </div>
 <div align="center">
@@ -9,21 +9,21 @@
   [![GoDoc](https://pkg.go.dev/badge/github.com/fluffy-melli/MoliDB.svg)](https://pkg.go.dev/github.com/fluffy-melli/MoliDB) [![PyPI version](https://img.shields.io/pypi/v/molidb.svg?color=blue)](https://pypi.org/project/molidb/) [![npm version](https://img.shields.io/npm/v/molidb.svg?color=yellow)](https://www.npmjs.com/package/molidb)
 </div>
 
-### 🌟 **MoliDB - Secure Memory Database**
+### 🌟 **MoliDB - 안전한 메모리 데이터베이스**
 
-> **MoliDB** is an open-source, secure memory database that allows easy management of data through its **REST API**.  
-All data is transmitted and received using **AES encryption**, ensuring sensitive information is handled securely.  
-You can find client code examples in [example.md](/md/example.md).
+> **MoliDB**는 오픈소스로 제공되는 안전한 메모리 데이터베이스로, **REST API**를 통해 데이터를 쉽게 다룰 수 있습니다.  
+모든 데이터는 **AES 암호화 방식**으로 송수신되어, 민감한 정보도 안전하게 처리할 수 있습니다.  
+클라이언트 코드 예제는 [example.md](/md/example.md)에서 확인할 수 있습니다.
 
----
+--- 
 
-### 🚀 **Installation Instructions**
+### 🚀 **설치 방법**
 
-Here are the steps to build and run the project:
+프로젝트 빌드 및 실행 방법은 아래와 같습니다:
 
-> **⚠️Note**: Be sure to modify the `SECRET_KEY` and `API_KEY` values in the `.env` file before running the project.
+> **⚠️주의**: 실행 전에 `.env` 파일에서 `SECRET_KEY`와 `API_KEY` 값을 반드시 수정해 주세요.
 
-#### **Running with Docker**
+#### **Docker로 실행하기**
 
 ```sh
 $ docker build -t molidb .
@@ -32,22 +32,22 @@ $ docker run -d -p 17233:17233 molidb
 
 ---
 
-### 📦 **Installing the Client**
+### 📦 **클라이언트 설치**
 
-### Python ![Python Icon](https://img.shields.io/badge/python-3.x-blue.svg) [![PyPI version](https://img.shields.io/pypi/v/molidb.svg)](https://pypi.org/project/molidb/)
+### ![Python](https://img.shields.io/badge/-Python-3776AB?style=flat-square&logo=python&logoColor=white) [![PyPI version](https://img.shields.io/pypi/v/molidb.svg)](https://pypi.org/project/molidb/)
 
-> To use the MoliDB client in Python, you can install the library from PyPI using the following command:
+> MoliDB 클라이언트를 Python에서 사용하려면 아래 명령어로 PyPI에서 라이브러리를 설치할 수 있습니다:
 
 ```bash
 $ pip install molidb
 ```
 
-#### 📜 Example Code (Python)
+#### 📜 예제 코드
 
 ```py
 from molidb import molidb
 
-db = molidb() # You can modify the server URL, secret key, and API token here.
+db = molidb() # 서버 URL / 시크릿 키 / API 토큰은 여기서 수정할수 있어요
 print(db.list_collection())
 print(db.update_collection('user', [{'id':'molidb','money':10}]))
 userlist = db.get_collection('user')
@@ -62,22 +62,21 @@ print(db.list_collection())
 
 ---
 
-### JavaScript ![JavaScript Icon](https://img.shields.io/badge/JavaScript-ES6-yellow.svg) [![npm version](https://img.shields.io/npm/v/molidb.svg)](https://www.npmjs.com/package/molidb)
+### ![JavaScript](https://img.shields.io/badge/-JavaScript-F7DF1E?style=flat-square&logo=javascript&logoColor=black) [![npm version](https://img.shields.io/npm/v/molidb.svg)](https://www.npmjs.com/package/molidb)
 
-> To use the MoliDB client in JavaScript, you can install the library from npm using the following command:
+> MoliDB 클라이언트를 JavaScript에서 사용하려면 아래 명령어로 npm에서 라이브러리를 설치할 수 있습니다:
 
 ```bash
 $ npm install molidb
 ```
 
-#### 📜 Example Code (JavaScript)
-
+#### 📜 예제 코드
 ```js
 const Molidb = require('molidb');
 
 (async () => {
     try {
-        const db = new Molidb(); // You can modify the server URL / secret key / API token here
+        const db = new Molidb(); // 서버 URL / 시크릿 키 / API 토큰은 여기서 수정할수 있어요
         console.log(JSON.stringify(await db.listCollection()));
         console.log(JSON.stringify(await db.updateCollection('user', [{ id: 'molidb', money: 10 }])));
         let userlist = await db.getCollection('user');
@@ -97,35 +96,34 @@ const Molidb = require('molidb');
     }
 })();
 ```
-
 ---
 
-### 🔐 **Encryption Method**
+### 🔐 암호화 방식
 
-- Step-by-step Process
+- 단계별 과정
 
-1. **Data Compression (gzip)**  
-   First, the data is compressed using the **gzip** algorithm. **gzip** reduces the size of the data, improving transmission and storage efficiency.
+1. 데이터 압축 (gzip)
+먼저 데이터를 **gzip** 알고리즘을 사용하여 압축합니다. **gzip**은 데이터의 크기를 줄여 전송 및 저장 효율성을 높이는 데 사용됩니다.
 
-2. **Data Encryption (AES)**  
-   The compressed data is encrypted using the **AES (Advanced Encryption Standard)** algorithm.  
-   AES is a symmetric key encryption method, meaning the same key is used to both encrypt and decrypt the data.  
-   The key used for this process is the `SECRET_KEY` from the `.env` file.
+2. 데이터 암호화 (AES)
+압축된 데이터를 **AES(Advanced Encryption Standard)** 알고리즘을 사용하여 암호화합니다.
+AES는 대칭 키 암호화 방식으로, 동일한 키를 사용하여 데이터를 암호화하고 복호화합니다.
+이때 키는 `.env` 파일 안에 있는 `SECRET_KEY`를 사용합니다.
 
-**This encryption process ensures both data efficiency and security.**
+**암호화 과정 시 데이터 효율성과 보안을 동시에 고려할 수 있습니다.**
 
 ```mermaid
 graph TD
-    subgraph c_crypto[Encryption]
+    subgraph c_crypto[암호화]
         BGZIP[gzip] --> BAES[AES]
     end
-    subgraph cb_crypto[Decryption]
+    subgraph cb_crypto[복호화]
         CBAES[AES] --> CBGZIP[gzip]
     end
-    subgraph s_crypto[Encryption]
+    subgraph s_crypto[암호화]
         AGZIP[gzip] --> AAES[AES]
     end
-    subgraph sb_crypto[Decryption]
+    subgraph sb_crypto[복호화]
         CAAES[AES] --> CAGZIP[gzip]
     end
 
@@ -141,14 +139,14 @@ graph TD
 
 ---
 
-### 📡 **REST API Structure**
+### 📡 REST API 구조
 
 ```mermaid
 graph TD
-    subgraph crypto[Encryption]
+    subgraph crypto[암호화]
         GZIP[gzip] --> AES[AES]
     end
-    subgraph ccrypto[Decryption]
+    subgraph ccrypto[복호화]
         CAES[AES] --> CGZIP[gzip]
     end
     subgraph router
@@ -166,29 +164,29 @@ graph TD
     end
 ```
 
-### 📍 **Router Explanation**
+### 📍 라우터 설명
 
-The router is responsible for handling client requests and returning appropriate responses. Each request is mapped to a specific endpoint and HTTP method, allowing the server to understand and process the client's request.
+라우터는 클라이언트의 요청을 처리하고 적절한 응답을 반환하는 역할을 합니다. 각 요청은 특정 엔드포인트와 HTTP 메서드에 매핑되며, 이를 통해 서버는 클라이언트의 요청을 이해하고 처리할 수 있습니다.
 
-#### **Main Endpoints**
+#### 주요 엔드포인트
 
-- `GET /collection`: Retrieves all collection data.
-- `GET /collection/:id`: Retrieves collection data for a specific ID.
-- `PUT /collection/:id`: Updates collection data for a specific ID.
-- `DELETE /collection/:id`: Deletes collection data for a specific ID.
+- `GET /collection`: 모든 컬렉션 데이터를 조회합니다.
+- `GET /collection/:id`: 특정 ID를 가진 컬렉션 데이터를 조회합니다.
+- `PUT /collection/:id`: 특정 ID를 가진 컬렉션 데이터를 업데이트합니다.
+- `DELETE /collection/:id`: 특정 ID를 가진 컬렉션 데이터를 삭제합니다.
 
-#### **Request Handling Process**
+#### 요청 처리 과정
 
-1. **Router**: The router receives the client’s request and routes it to the appropriate endpoint.
-2. **API-Token Validation**: The API-Token included in the request is validated. If invalid, a 400 response is returned.
-3. **Encryption/Decryption**: For valid requests, data is compressed using gzip and encrypted using AES before being stored in the database, or data retrieved from the database is decrypted and decompressed before being returned to the client.
-4. **Response**: Depending on the outcome, either a 200 or 400 response is returned.
+1. **라우터**: 클라이언트의 요청을 받아 적절한 엔드포인트로 라우팅합니다.
+2. **API-Token 검사**: 요청에 포함된 API-Token을 검사하여 유효성을 확인합니다. 유효하지 않은 경우 400 응답을 반환합니다.
+3. **암호화/복호화**: 유효한 요청의 경우, 데이터를 gzip으로 압축하고 AES로 암호화하여 데이터베이스에 저장하거나, 데이터베이스에서 가져온 데이터를 복호화하고 압축을 해제하여 클라이언트에 반환합니다.
+4. **응답**: 처리 결과에 따라 200 또는 400 응답을 반환합니다.
 
-This structure allows the server to efficiently process client requests while maintaining data security and integrity.
+이러한 구조를 통해 서버는 클라이언트의 요청을 효율적으로 처리하고, 데이터의 보안과 무결성을 유지할 수 있습니다.
 
 ---
 
-### 🏗️ Overall Architecture
+### 🏗️ 전체 구조
 
 ```mermaid
 graph TB
@@ -259,8 +257,8 @@ graph TB
 
 ---
 
-### 📜 **License**
+### 📜 라이선스
 
-`MoliDB` follows the **MIT License**. Please comply with the license terms if modifying or distributing the code.
+`MoliDB`는 **MIT License**를 따릅니다. 코드를 수정하거나 배포할 경우, 라이선스 내용을 준수해 주세요.  
 
 Copyright © All rights reserved.
